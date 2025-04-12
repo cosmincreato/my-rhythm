@@ -1,8 +1,10 @@
 import ui.UILauncher;
+import users.UserService;
 
 public class Main {
 
     public static void main(String[] args) {
-        UILauncher ui = UILauncher.getInstance();
+        UserService userService = new UserService();
+        UILauncher.launch(userService);
     }
 }

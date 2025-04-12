@@ -1,14 +1,32 @@
 # MyRhythm
 
-Music Tracker folosind Java, interfata fiind creata cu Swing.
+MyRhythm is a minimalist music tracking app built in Java with Swing.
 
-Clase folosite:
+## Backend
 
-Pentru Backend:
-- User
-- User Service (Gestioneaza utilizatorii)
+### Classes
+- `User`
+- `UserService` — *Manages users*
 
-Pentru Frontend:
-- UILauncher (Singleton pentru initializarea UI-ului)
-- MainFrame (Ecranul principal)
-- Header
+### Exceptions
+- `UserNotFoundException`
+
+---
+
+## Frontend
+
+### Classes
+- `UILauncher`— *Initializes the UI*
+- `Header`
+- `MainFrame`
+- `ProfileFrame`
+- `ProfilePanel`
+- `TopPanel`
+- `UsersPanel`
+
+### Interfaces
+- `UserAddedListener`
+- `UserRemovedListener`
+
+### Enums
+- `Colors` — *Application color palette*

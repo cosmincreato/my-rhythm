@@ -28,6 +28,6 @@ public class User {
 
     @Override
     public String toString() {
-        return "[" + id + "] " + "Username: " + username + " | Password: " + password;
+        return "[" + id + "] " + "Username: " + username;
     }
 }

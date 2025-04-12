@@ -1,31 +1,16 @@
 package ui;
 
+import ui.frames.MainFrame;
+import users.UserService;
+
 import javax.swing.*;
 
 public class UILauncher {
-    private static final UILauncher instance = new UILauncher();
-    private MainFrame mainFrame;
-    private boolean init = false;
 
-    private UILauncher() {
+    public static void launch(UserService userService) {
         SwingUtilities.invokeLater(() -> {
-            mainFrame = new MainFrame();
-            init = true;
+            new MainFrame(userService);
         });
     }
 
-    public static UILauncher getInstance() {
-        return instance;
-    }
-
-    public MainFrame getMainFrame() {
-        while (!init) {
-            try {
-                Thread.sleep(10);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-        return mainFrame;
-    }
 }
