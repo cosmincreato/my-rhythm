@@ -1,5 +1,6 @@
 package ui.panels;
 
+import music.PerformerService;
 import ui.Colors;
 import ui.Header;
 import ui.frames.ProfileFrame;
@@ -13,11 +14,13 @@ import java.awt.event.MouseEvent;
 
 public class UsersPanel extends JPanel {
     private UserService userService;
+    private PerformerService performerService;
     private Header header;
 
-    public UsersPanel(UserService userService) {
+    public UsersPanel(UserService userService, PerformerService performerService) {
         // Initializare
         this.userService = userService;
+        this.performerService = performerService;
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setBackground(Colors.BACKGROUND.getColor());
 
@@ -25,7 +28,7 @@ public class UsersPanel extends JPanel {
         header = new Header("Users", 20);
         header.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        // Adaugam header-ul in panel-ul cu utilizatori
+        // Adaugam header-ul in panel
         add(header);
         add(Box.createVerticalStrut(10));
     }
@@ -51,7 +54,7 @@ public class UsersPanel extends JPanel {
             userLabel.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    new ProfileFrame(user.getId(), userService, () -> {update();});
+                    new ProfileFrame(user.getId(), userService, performerService,  () -> {update();});
                 }
             });
 

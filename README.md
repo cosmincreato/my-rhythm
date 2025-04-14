@@ -11,8 +11,6 @@ MyRhythm is a minimalist music tracking app built in Java with Swing.
 ### Exceptions
 - `UserNotFoundException`
 
----
-
 ## Frontend
 
 ### Classes
