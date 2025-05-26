@@ -1,12 +1,11 @@
-package ui.panels;
+package frontend.panels;
 
-import ui.Colors;
-import ui.Header;
-import ui.UserAddedListener;
-import ui.UserRemovedListener;
-import users.User;
-import users.UserNotFoundException;
-import users.UserService;
+import frontend.Colors;
+import frontend.Header;
+import frontend.UserRemovedListener;
+import backend.User;
+import backend.UserNotFoundException;
+import backend.services.UserService;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,14 +14,12 @@ import java.awt.event.ActionListener;
 
 public class ProfilePanel extends JPanel {
     public UserRemovedListener listener;
-    private UserService userService;
     private Header header;
     private JButton removeUserButton;
     private User user;
 
-    public ProfilePanel(UserRemovedListener listener, UserService userService, User user) {
+    public ProfilePanel(UserRemovedListener listener, User user) {
         this.listener = listener;
-        this.userService = userService;
         this.user = user;
 
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -42,7 +39,7 @@ public class ProfilePanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    userService.removeUser(user.getId());
+                    UserService.getInstance().removeUser(user.getId());
                 }
                 catch (UserNotFoundException ex) {
                     System.out.println(ex.getMessage());

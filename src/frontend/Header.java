@@ -1,4 +1,4 @@
-package ui;
+package frontend;
 
 import javax.swing.*;
 import java.awt.*;

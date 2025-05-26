@@ -1,11 +1,11 @@
-package ui.panels;
+package frontend.panels;
 
-import music.PerformerService;
-import ui.Colors;
-import ui.Header;
-import ui.frames.ProfileFrame;
-import users.User;
-import users.UserService;
+import backend.services.PerformerService;
+import frontend.Colors;
+import frontend.Header;
+import frontend.frames.ProfileFrame;
+import backend.User;
+import backend.services.UserService;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,14 +13,10 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class UsersPanel extends JPanel {
-    private UserService userService;
-    private PerformerService performerService;
     private Header header;
 
-    public UsersPanel(UserService userService, PerformerService performerService) {
+    public UsersPanel() {
         // Initializare
-        this.userService = userService;
-        this.performerService = performerService;
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setBackground(Colors.BACKGROUND.getColor());
 
@@ -45,7 +41,7 @@ public class UsersPanel extends JPanel {
         userListPanel.setLayout(new BoxLayout(userListPanel, BoxLayout.Y_AXIS));
         userListPanel.setBackground(Colors.BACKGROUND.getColor());
 
-        for (User user : userService.getUsers()) {
+        for (User user : UserService.getInstance().getUsers()) {
             JLabel userLabel = new JLabel(user.toString());
             userLabel.setFont(new Font("Helvetica Neue", Font.PLAIN, 14));
             userLabel.setForeground(Color.WHITE);
@@ -53,7 +49,7 @@ public class UsersPanel extends JPanel {
             userLabel.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    new ProfileFrame(user.getId(), userService, performerService,  () -> {update();});
+                    new ProfileFrame(user.getId(),  () -> {update();});
                 }
             });
 

@@ -1,22 +1,19 @@
-package ui.frames;
+package frontend.frames;
 
-import music.PerformerService;
-import ui.Colors;
-import ui.UserAddedListener;
-import ui.UserRemovedListener;
-import ui.panels.PerformersPanel;
-import ui.panels.PlaylistsPanel;
-import ui.panels.ProfilePanel;
-import ui.panels.SongsPanel;
-import users.User;
-import users.UserService;
+import backend.services.PerformerService;
+import frontend.Colors;
+import frontend.UserRemovedListener;
+import frontend.panels.PerformersPanel;
+import frontend.panels.PlaylistsPanel;
+import frontend.panels.ProfilePanel;
+import frontend.panels.SongsPanel;
+import backend.User;
+import backend.services.UserService;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class ProfileFrame extends JFrame implements UserRemovedListener {
-    private UserService userService;
-    private PerformerService performerService;
     private final Dimension dimension = new Dimension(1024, 600);
     private ProfilePanel profilePanel;
     private SongsPanel songsPanel;
@@ -25,10 +22,9 @@ public class ProfileFrame extends JFrame implements UserRemovedListener {
     User user;
     UserRemovedListener listener;
 
-    public ProfileFrame(int id, UserService userService, PerformerService performerService, UserRemovedListener listener) {
+    public ProfileFrame(int id, UserRemovedListener listener) {
         // Initializare
-        this.userService = userService;
-        this.user = this.userService.findUser(id);
+        this.user = UserService.getInstance().findUser(id);
         this.listener = listener;
         setSize(dimension);
         setResizable(false);
@@ -42,10 +38,10 @@ public class ProfileFrame extends JFrame implements UserRemovedListener {
 
 
 
-        profilePanel = new ProfilePanel(this, userService, user);
-        songsPanel = new SongsPanel(userService);
-        performersPanel = new PerformersPanel(userService, performerService, user);
-        playlistsPanel = new PlaylistsPanel(userService);
+        profilePanel = new ProfilePanel(this, user);
+        songsPanel = new SongsPanel();
+        performersPanel = new PerformersPanel(user);
+        playlistsPanel = new PlaylistsPanel();
 
         centerContainer.add(songsPanel);
         centerContainer.add(Box.createVerticalStrut(10)); // spacing

@@ -1,11 +1,11 @@
-package ui.panels;
+package frontend.panels;
 
-import music.Performer;
-import music.PerformerService;
-import ui.Colors;
-import ui.Header;
-import users.User;
-import users.UserService;
+import backend.Performer;
+import backend.services.PerformerService;
+import frontend.Colors;
+import frontend.Header;
+import backend.User;
+import backend.services.UserService;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,15 +14,11 @@ import java.util.ArrayList;
 import java.util.Set;
 
 public class PerformersPanel extends JPanel {
-    private UserService userService;
-    private PerformerService performerService;
     private JButton addPerformerButton;
     private Header header;
     private User user;
 
-    public PerformersPanel(UserService userService, PerformerService performerService, User user) {
-        this.userService = userService;
-        this.performerService = performerService;
+    public PerformersPanel(User user) {
         this.user = user;
 
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -39,7 +35,7 @@ public class PerformersPanel extends JPanel {
     }
 
     private void onAddPerformerClicked(ActionEvent e) {
-        ArrayList<Performer> performers = performerService.getPerformers();
+        ArrayList<Performer> performers = PerformerService.getInstance().getPerformers();
 
         Performer selected = (Performer) JOptionPane.showInputDialog(
                 this,

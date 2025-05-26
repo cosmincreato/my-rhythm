@@ -1,12 +1,23 @@
-package users;
+package backend.services;
 
-import database.DatabaseConnector;
+import backend.User;
+import backend.UserNotFoundException;
+import backend.database.DatabaseConnector;
 
-import javax.xml.transform.Result;
 import java.sql.*;
 import java.util.ArrayList;
 
 public class UserService {
+
+    private static UserService instance = null;
+
+    private UserService() {}
+
+    public static UserService getInstance() {
+        if (instance == null)
+            instance = new UserService();
+        return instance;
+    }
 
     public ArrayList<User> getUsers() {
         ArrayList<User> users = new ArrayList<>();

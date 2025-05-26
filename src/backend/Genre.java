@@ -1,4 +1,4 @@
-package music;
+package backend;
 
 public enum Genre {
     ROCK,

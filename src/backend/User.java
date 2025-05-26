@@ -1,9 +1,4 @@
-package users;
-
-import com.sun.source.doctree.SeeTree;
-import music.Performer;
-import music.Playlist;
-import music.Song;
+package backend;
 
 import java.util.ArrayList;
 import java.util.Comparator;

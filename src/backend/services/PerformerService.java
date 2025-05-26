@@ -1,11 +1,17 @@
-package music;
+package backend.services;
+
+import backend.Artist;
+import backend.Band;
+import backend.Performer;
 
 import java.util.ArrayList;
 
 public class PerformerService {
+
+    private static PerformerService instance = null;
     private ArrayList<Performer> performers;
 
-    public PerformerService() {
+    private PerformerService() {
         ///  Lista cu cateva trupe si artisti care vor fi adaugate in baza de date
         this.performers = new ArrayList<>();
         Band theKillers = new Band("The Killers");
@@ -35,6 +41,12 @@ public class PerformerService {
         this.performers.add(new Artist("Duffy"));
         this.performers.add(new Artist("Metro Boomin"));
         this.performers.add(new Artist("Avicii"));
+    }
+
+    public static PerformerService getInstance() {
+        if (instance == null)
+            instance = new PerformerService();
+        return instance;
     }
 
     public void addPerformer(Performer performer) {

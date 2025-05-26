@@ -1,4 +1,4 @@
-package music;
+package backend;
 
 public class Song {
     private Performer performer;

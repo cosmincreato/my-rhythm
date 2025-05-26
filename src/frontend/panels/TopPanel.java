@@ -1,10 +1,10 @@
-package ui.panels;
+package frontend.panels;
 
-import ui.Colors;
-import ui.Header;
-import ui.UserAddedListener;
-import users.User;
-import users.UserService;
+import frontend.Colors;
+import frontend.Header;
+import frontend.UserAddedListener;
+import backend.User;
+import backend.services.UserService;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,14 +13,12 @@ import java.awt.event.ActionListener;
 
 public class TopPanel extends JPanel {
     public UserAddedListener listener;
-    private UserService userService;
     private Header header;
     private JButton addUserButton;
 
-    public TopPanel(UserAddedListener listener, UserService userService) {
+    public TopPanel(UserAddedListener listener) {
         // Initializare
         this.listener = listener;
-        this.userService = userService;
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setBackground(Colors.BACKGROUND.getColor());
 
@@ -62,7 +60,7 @@ public class TopPanel extends JPanel {
                             strong = false;
                         if (strong) {
                             User user = new User(username, password);
-                            userService.addUser(user);
+                            UserService.getInstance().addUser(user);
                             listener.onUserAdded(); // update the UI
                         }
                         else {

@@ -1,12 +1,12 @@
-package database;
+package backend.database;
 
 import java.io.*;
 import java.sql.*;
 
 public class DatabaseConnector {
-    private static final String URL = "jdbc:postgresql://localhost:5432/postgres";
-    private static final String USER = "cosmincreato";
-    private static final String PASSWORD = "loganmohawkpuppy";
+    private static final String url = "jdbc:postgresql://localhost:5432/postgres";
+    private static final String user = "cosmincreato";
+    private static final String password = "admin";
 
     public DatabaseConnector() {
         Connection conn = connect();
@@ -18,7 +18,7 @@ public class DatabaseConnector {
 
     public static Connection connect() {
         try {
-            return DriverManager.getConnection(URL, USER, PASSWORD);
+            return DriverManager.getConnection(url, user, password);
         } catch (SQLException e) {
             System.err.println("Conexiunea la baza de date nu s-a putut realiza: " + e.getMessage());
             return null;
