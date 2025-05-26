@@ -1,47 +1,104 @@
 package users;
 
+import database.DatabaseConnector;
+
+import javax.xml.transform.Result;
+import java.sql.*;
 import java.util.ArrayList;
 
 public class UserService {
-    private ArrayList<User> users;
-
-    public UserService() {
-        this.users = new ArrayList<>();
-    }
 
     public ArrayList<User> getUsers() {
+        ArrayList<User> users = new ArrayList<>();
+        String sql = "SELECT id, username, password FROM users";
+
+        try (Connection conn = DatabaseConnector.connect();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String username = rs.getString("username");
+                String password = rs.getString("password");
+
+                User user = new User(username, password);
+                user.setId(id);
+                users.add(user);
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Eroare la citirea utilizatorilor: " + e.getMessage());
+        }
+
         return users;
     }
 
     public void addUser(User user) {
-        users.add(user);
-        System.out.println("Utilizator adaugat.");
+        String sql = "INSERT INTO users (username, password) VALUES (?, ?)";
+
+        try (Connection conn = DatabaseConnector.connect();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, user.getUsername());
+            stmt.setString(2, user.getPassword());
+
+            stmt.executeUpdate();
+            System.out.println("Utilizator adaugat: " + user.getUsername());
+
+        } catch (SQLException e) {
+            System.err.println("Eroare la adaugarea utilizatorului: " + e.getMessage());
+        }
     }
+
 
     public User findUser(int id) {
-        for (User user : users) {
-            if (user.getId() == id) {
-                return user;
-            }
-        }
-        throw new UserNotFoundException("Utilizatorul cu id-ul " + id + " nu a fost gasit.");
-    }
+        String sql = "SELECT id, username, password FROM users WHERE id = ?";
 
-    public void removeUser(int id) {
-        for (User user : users) {
-            if (user.getId() == id) {
-                users.remove(user);
-                System.out.println("Utilizatorul cu id-ul " + id + " a fost sters.");
-                return;
+        try (Connection conn = DatabaseConnector.connect();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                String username = rs.getString("username");
+                String password = rs.getString("password");
+
+                User user = new User(username, password);
+                user.setId(id);
+                return user;
+            } else {
+                throw new UserNotFoundException("Utilizatorul cu id-ul " + id + " nu a fost gasit.");
             }
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Eroare la cautarea utilizatorului in baza de date: " + e.getMessage(), e);
         }
-        throw new UserNotFoundException("Utilizatorul cu id-ul " + id + " nu a fost gasit.");
+    }
+    public void removeUser(int id) {
+        String sql = "DELETE FROM users WHERE id = ?";
+
+        try (Connection conn = DatabaseConnector.connect();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, id);
+            int affectedRows = stmt.executeUpdate();
+
+            if (affectedRows > 0) {
+                System.out.println("Utilizatorul cu id-ul " + id + " a fost sters.");
+            } else {
+                throw new UserNotFoundException("Utilizatorul cu id-ul " + id + " nu a fost gasit.");
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Eroare la stergerea utilizatorului din baza de date: " + e.getMessage(), e);
+        }
     }
 
     @Override
     public String toString() {
         String us = "";
-        for (User user : users)
+        for (User user : getUsers())
             us += user + "\n";
         return us;
     }

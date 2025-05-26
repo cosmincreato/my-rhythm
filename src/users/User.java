@@ -16,13 +16,9 @@ public class User {
     private ArrayList<Playlist> playlists;
     private Set<Song> favoriteSongs;
     private Set<Performer> favoritePerformers;
-    private static int id_counter = 0;
     private int id;
 
-    {id_counter++;}
-
     public User(String username, String password) {
-        this.id = id_counter;
         this.username = username;
         this.password = password;
         this.playlists = new ArrayList<>();
@@ -40,6 +36,10 @@ public class User {
 
     public void addFavoritePerformer(Performer performer) {
         this.favoritePerformers.add(performer);
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getUsername() {

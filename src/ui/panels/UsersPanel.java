@@ -28,16 +28,15 @@ public class UsersPanel extends JPanel {
         header = new Header("Users", 20);
         header.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        // Adaugam header-ul in panel
-        add(header);
-        add(Box.createVerticalStrut(10));
+        // Adaugam lista de utilizatori in panel
+        update();
     }
 
     public void update() {
         // Stergem content-ul din panel-ul invechit
         removeAll();
 
-        // Readaugam header-ul si spacing-ul
+        // Adaugam header-ul si spacing-ul
         add(header);
         add(Box.createVerticalStrut(10));
 

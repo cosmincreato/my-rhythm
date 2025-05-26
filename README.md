@@ -7,6 +7,13 @@ MyRhythm is a minimalist music tracking app built in Java with Swing.
 ### Classes
 - `User`
 - `UserService` — *Manages users*
+- `Performer` - *Abstract class for singers*
+- `Artist` - *Extends `Performer`, only one singer*
+- `Band` - *Extends `Performer`, has more than one singer*
+- `PerformerService` - *Manages performers*
+- `Playlist` - *List of songs, created by the user*
+- `Song`
+- `SongService` - *Manages songs*
 
 ### Exceptions
 - `UserNotFoundException`
@@ -15,7 +22,7 @@ MyRhythm is a minimalist music tracking app built in Java with Swing.
 
 ### Classes
 - `UILauncher`— *Initializes the UI*
-- `Header`
+- `Header` - Panel header text
 - `MainFrame`
 - `ProfileFrame`
 - `ProfilePanel`
@@ -23,8 +30,9 @@ MyRhythm is a minimalist music tracking app built in Java with Swing.
 - `UsersPanel`
 
 ### Interfaces
-- `UserAddedListener`
-- `UserRemovedListener`
+- `UserAddedListener` - *Observer Design Pattern*
+- `UserRemovedListener` - *Observer Design Pattern*
 
 ### Enums
 - `Colors` — *Application color palette*
+- `Genre` - *List of possible song genres*
