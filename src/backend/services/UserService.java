@@ -1,5 +1,7 @@
 package backend.services;
 
+import backend.Performer;
+import backend.Song;
 import backend.User;
 import backend.UserNotFoundException;
 import backend.database.DatabaseConnector;
@@ -86,19 +88,20 @@ public class UserService {
             throw new RuntimeException("Eroare la cautarea utilizatorului in baza de date: " + e.getMessage(), e);
         }
     }
-    public void removeUser(int id) {
+
+    public void removeUser(User user) {
         String sql = "DELETE FROM users WHERE id = ?";
 
         try (Connection conn = DatabaseConnector.connect();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setInt(1, id);
+            stmt.setInt(1, user.getId());
             int affectedRows = stmt.executeUpdate();
 
             if (affectedRows > 0) {
-                System.out.println("Utilizatorul cu id-ul " + id + " a fost sters.");
+                System.out.println("Utilizatorul cu id-ul " + user.getId() + " a fost sters.");
             } else {
-                throw new UserNotFoundException("Utilizatorul cu id-ul " + id + " nu a fost gasit.");
+                throw new UserNotFoundException("Utilizatorul cu id-ul " + user.getId() + " nu a fost gasit.");
             }
 
         } catch (SQLException e) {
@@ -106,11 +109,169 @@ public class UserService {
         }
     }
 
-    @Override
-    public String toString() {
-        String us = "";
-        for (User user : getUsers())
-            us += user + "\n";
-        return us;
+    /// Favorite Performers
+
+    public ArrayList<Performer> getFavoritePerformers(User user) {
+        ArrayList<Performer> favoritePerformers = new ArrayList<>();
+        String sql = "SELECT performer_id FROM favorite_performers WHERE user_id = ?";
+
+        try (Connection conn = DatabaseConnector.connect();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, user.getId());
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                int performerId = rs.getInt("performer_id");
+
+                Performer performer = PerformerService.getInstance().findPerformer(performerId);
+                if (performer != null) {
+                    favoritePerformers.add(performer);
+                }
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Eroare la citirea artistilor favoriți: " + e.getMessage());
+        }
+
+        return favoritePerformers;
+    }
+
+    public void addFavoritePerformer(User user, Performer performer) {
+        try {
+            Performer existing = findFavoritePerformer(user.getId(), performer.getId());
+            System.out.println("Artistul " + performer.getName() + " este deja in lista de favoriti pentru " + user.getUsername());
+            return;
+
+        } catch (RuntimeException e) {
+            if (!e.getMessage().contains("nu este favorit")) {
+                throw e;
+            }
+        }
+
+        String sql = "INSERT INTO favorite_performers (user_id, performer_id) VALUES (?, ?)";
+
+        try (Connection conn = DatabaseConnector.connect();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, user.getId());
+            stmt.setInt(2, performer.getId());
+
+            stmt.executeUpdate();
+            System.out.println("Artist favorit adaugat: " + performer.getName() + " la utilizatorul: " + user.getUsername());
+
+        } catch (SQLException e) {
+            System.err.println("Eroare la adaugarea artistului favorit: " + e.getMessage());
+        }
+    }
+
+
+    public Performer findFavoritePerformer(int userId, int performerId) {
+        String sql = "SELECT performer_id FROM favorite_performers WHERE user_id = ? AND performer_id = ?";
+
+        try (Connection conn = DatabaseConnector.connect();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, userId);
+            stmt.setInt(2, performerId);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                Performer performer = PerformerService.getInstance().findPerformer(performerId);
+                if (performer != null) {
+                    return performer;
+                } else {
+                    throw new RuntimeException("Artistul cu id-ul " + performerId + " nu a fost gasit.");
+                }
+            } else {
+                throw new RuntimeException("Artistul cu id-ul " + performerId + " nu este favorit pentru utilizatorul cu id-ul " + userId + ".");
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Eroare la cautarea artistului favorit: " + e.getMessage(), e);
+        }
+    }
+
+    /// Favorite Songs
+
+    public ArrayList<Song> getFavoriteSongs(User user) {
+        ArrayList<Song> favoriteSongs = new ArrayList<>();
+        String sql = "SELECT song_id FROM favorite_songs WHERE user_id = ?";
+
+        try (Connection conn = DatabaseConnector.connect();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, user.getId());
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                int songId = rs.getInt("song_id");
+
+                Song song = SongService.getInstance().findSong(songId);
+                if (song != null) {
+                    favoriteSongs.add(song);
+                }
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Eroare la citirea artistilor favoriți: " + e.getMessage());
+        }
+
+        return favoriteSongs;
+    }
+
+    public void addFavoriteSong(User user, Song song) {
+        try {
+            Song existing = findFavoriteSong(user.getId(), song.getId());
+            System.out.println("Artistul " + song.getName() + " este deja in lista de favoriti pentru " + user.getUsername());
+            return;
+
+        } catch (RuntimeException e) {
+            if (!e.getMessage().contains("nu este favorit")) {
+                throw e;
+            }
+        }
+
+        String sql = "INSERT INTO favorite_songs (user_id, song_id) VALUES (?, ?)";
+
+        try (Connection conn = DatabaseConnector.connect();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, user.getId());
+            stmt.setInt(2, song.getId());
+
+            stmt.executeUpdate();
+            System.out.println("Artist favorit adaugat: " + song.getName() + " la utilizatorul: " + user.getUsername());
+
+        } catch (SQLException e) {
+            System.err.println("Eroare la adaugarea artistului favorit: " + e.getMessage());
+        }
+    }
+
+
+    public Song findFavoriteSong(int userId, int songId) {
+        String sql = "SELECT song_id FROM favorite_songs WHERE user_id = ? AND song_id = ?";
+
+        try (Connection conn = DatabaseConnector.connect();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, userId);
+            stmt.setInt(2, songId);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                Song song = SongService.getInstance().findSong(songId);
+                if (song != null) {
+                    return song;
+                } else {
+                    throw new RuntimeException("Melodia cu id-ul " + songId + " nu a fost gasita.");
+                }
+            } else {
+                throw new RuntimeException("Melodia cu id-ul " + songId + " nu este favorita pentru utilizatorul cu id-ul " + userId + ".");
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Eroare la cautarea melodiei favorite: " + e.getMessage(), e);
+        }
     }
 }

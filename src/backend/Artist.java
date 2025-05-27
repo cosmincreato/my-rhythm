@@ -14,7 +14,12 @@ public class Artist extends Performer {
     }
 
     @Override
+    public String getType() {
+        return "artist";
+    }
+
+    @Override
     public String toString() {
-        return this.getName();
+        return "Artist: " + getName();
     }
 }

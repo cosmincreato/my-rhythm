@@ -10,7 +10,6 @@ public class User {
     private String password;
     private ArrayList<Playlist> playlists;
     private Set<Song> favoriteSongs;
-    private Set<Performer> favoritePerformers;
     private int id;
 
     public User(String username, String password) {
@@ -18,7 +17,6 @@ public class User {
         this.password = password;
         this.playlists = new ArrayList<>();
         this.favoriteSongs = new TreeSet<>(Comparator.comparing(Song::getName));
-        this.favoritePerformers = new TreeSet<>(Comparator.comparing(Performer::getName));
     }
 
     public void addPlaylist(Playlist playlist) {
@@ -27,10 +25,6 @@ public class User {
 
     public void addFavoriteSong(Song song) {
         this.favoriteSongs.add(song);
-    }
-
-    public void addFavoritePerformer(Performer performer) {
-        this.favoritePerformers.add(performer);
     }
 
     public void setId(int id) {
@@ -55,10 +49,6 @@ public class User {
 
     public Set<Song> getFavoriteSongs() {
         return favoriteSongs;
-    }
-
-    public Set<Performer> getFavoritePerformers() {
-        return favoritePerformers;
     }
 
     @Override

@@ -1,5 +1,7 @@
 package backend;
 
+import backend.services.PerformerService;
+
 import java.util.ArrayList;
 
 public class Band extends Performer {
@@ -10,8 +12,9 @@ public class Band extends Performer {
         this.members = new ArrayList<>();
     }
 
-    public void addMember(Artist artist) {
-        members.add(artist);
+    public Band(String name, ArrayList<Artist> members) {
+        super(name);
+        this.members = members;
     }
 
     @Override
@@ -20,9 +23,15 @@ public class Band extends Performer {
     }
 
     @Override
+    public String getType() {
+        return "band";
+    }
+
+    @Override
     public String toString() {
-        String s = this.getName() + " (";
-        for (Artist member : getMembers()) {
+        ArrayList<Artist> bandMembers = PerformerService.getInstance().getBandMembers(this.getId());
+        String s = "Band: " + this.getName() + " (";
+        for (Artist member : bandMembers) {
             s += member + ", ";
         }
         return s.substring(0, s.length() - 2) + ")";

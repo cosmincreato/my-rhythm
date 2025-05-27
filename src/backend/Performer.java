@@ -14,6 +14,10 @@ public abstract class Performer {
         this.name = name;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public int getId() {
         return id;
     }
@@ -21,6 +25,8 @@ public abstract class Performer {
     public String getName() {
         return name;
     }
+
+    public abstract String getType();
 
     public abstract List<Artist> getMembers();
 }

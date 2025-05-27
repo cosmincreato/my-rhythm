@@ -5,17 +5,34 @@ public class Song {
     private String name;
     private Genre genre;
     private int durationInSeconds;
-    private static int id_counter = 0;
     private int id;
 
-    {id_counter++;}
 
     public Song(Performer performer, String name, Genre genre, int durationInSeconds) {
-        this.id = id_counter;
         this.performer = performer;
         this.name = name;
         this.genre = genre;
         this.durationInSeconds = durationInSeconds;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public int getDurationInSeconds() {
+        return durationInSeconds;
+    }
+
+    public Performer getPerformer() {
+        return performer;
+    }
+
+    public Genre getGenre() {
+        return genre;
     }
 
     public String getName() {

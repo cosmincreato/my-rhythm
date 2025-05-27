@@ -1,11 +1,11 @@
-package frontend.panels;
+package frontend.panels.profile;
 
 import backend.Performer;
 import backend.services.PerformerService;
+import backend.services.UserService;
 import frontend.Colors;
 import frontend.Header;
 import backend.User;
-import backend.services.UserService;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,12 +13,12 @@ import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Set;
 
-public class PerformersPanel extends JPanel {
+public class FavoritePerformersPanel extends JPanel {
     private JButton addPerformerButton;
     private Header header;
     private User user;
 
-    public PerformersPanel(User user) {
+    public FavoritePerformersPanel(User user) {
         this.user = user;
 
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -37,24 +37,26 @@ public class PerformersPanel extends JPanel {
     private void onAddPerformerClicked(ActionEvent e) {
         ArrayList<Performer> performers = PerformerService.getInstance().getPerformers();
 
-        Performer selected = (Performer) JOptionPane.showInputDialog(
-                this,
-                "Select an Artist:",
-                "Choose Artist",
-                JOptionPane.PLAIN_MESSAGE,
-                null,
-                performers.toArray(),
-                performers.get(0)
-        );
+        if (performers.size() != 0) {
+            Performer selected = (Performer) JOptionPane.showInputDialog(
+                    this,
+                    "Select an Artist:",
+                    "Choose Artist",
+                    JOptionPane.PLAIN_MESSAGE,
+                    null,
+                    performers.toArray(),
+                    performers.get(0)
+            );
 
-        if (selected != null) {
-            user.addFavoritePerformer(selected);
-            update();
+            if (selected != null) {
+                UserService.getInstance().addFavoritePerformer(user, selected);
+                update();
+            }
         }
     }
 
         public void update() {
-            Set<Performer> favoritePerformers = user.getFavoritePerformers();
+            ArrayList<Performer> favoritePerformers = UserService.getInstance().getFavoritePerformers(user);
             // Stergem content-ul din panel-ul invechit
             removeAll();
 

@@ -4,23 +4,26 @@ import java.util.*;
 
 public class Playlist {
     private String name;
-    private Set<Song> songs;
-    private static int id_counter = 0;
     private int id;
 
-    {id_counter++;}
 
     public Playlist(String name) {
-        this.id = id_counter;
         this.name = name;
-        songs = new TreeSet<>(Comparator.comparing(Song::getName));
     }
 
-    public void addSong(Song song) {
-        this.songs.add(song);
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public Set<Song> getSongs() {
-        return songs;
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getId() {
+        return id;
     }
 }

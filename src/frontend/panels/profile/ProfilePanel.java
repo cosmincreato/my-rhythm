@@ -1,4 +1,4 @@
-package frontend.panels;
+package frontend.panels.profile;
 
 import frontend.Colors;
 import frontend.Header;
@@ -39,7 +39,7 @@ public class ProfilePanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    UserService.getInstance().removeUser(user.getId());
+                    UserService.getInstance().removeUser(user);
                 }
                 catch (UserNotFoundException ex) {
                     System.out.println(ex.getMessage());

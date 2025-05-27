@@ -1,23 +1,19 @@
 package frontend.frames;
 
-import backend.services.PerformerService;
-import backend.services.SongService;
 import frontend.Colors;
-import frontend.UserAddedListener;
-import frontend.panels.TopPanel;
-import frontend.panels.UsersPanel;
-import backend.services.UserService;
+import frontend.panels.main.PerformersPanel;
+import frontend.panels.main.SongsPanel;
+import frontend.panels.main.TopPanel;
+import frontend.panels.main.UsersPanel;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class MainFrame extends JFrame implements UserAddedListener {
-    private final Dimension dimension = new Dimension(1024, 600);
-    private final TopPanel topPanel;
-    private final UsersPanel usersPanel;
+public class MainFrame extends JFrame {
 
     public MainFrame() {
         // Initializare
+        Dimension dimension = new Dimension(1024, 600);
         setSize(dimension);
         setResizable(false);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -26,18 +22,23 @@ public class MainFrame extends JFrame implements UserAddedListener {
         getContentPane().setBackground(Colors.BACKGROUND.getColor());
         setLayout(new BorderLayout());
 
-        topPanel = new TopPanel(this);
-        usersPanel = new UsersPanel();
+        TopPanel topPanel = new TopPanel();
+
+        UsersPanel usersPanel = new UsersPanel();
+        PerformersPanel performersPanel = new PerformersPanel();
+        SongsPanel songsPanel = new SongsPanel();
+
+        JTabbedPane tabbedPane = new JTabbedPane();
+        tabbedPane.setBackground(Color.WHITE);
+        tabbedPane.setForeground(Colors.PRIMARY.getColor());
+
+        tabbedPane.addTab("Users", usersPanel);
+        tabbedPane.addTab("Performers", performersPanel);
+        tabbedPane.addTab("Songs", songsPanel);
 
         add(topPanel, BorderLayout.NORTH);
-        add(usersPanel, BorderLayout.CENTER);
+        add(tabbedPane, BorderLayout.CENTER);
 
         setVisible(true);
-    }
-
-    // Cand in TopPanel se adauga un utilizator
-    @Override
-    public void onUserAdded() {
-        usersPanel.update();
     }
 }

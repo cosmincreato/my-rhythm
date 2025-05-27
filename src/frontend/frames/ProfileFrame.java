@@ -1,12 +1,11 @@
 package frontend.frames;
 
-import backend.services.PerformerService;
 import frontend.Colors;
 import frontend.UserRemovedListener;
-import frontend.panels.PerformersPanel;
-import frontend.panels.PlaylistsPanel;
-import frontend.panels.ProfilePanel;
-import frontend.panels.SongsPanel;
+import frontend.panels.profile.FavoritePerformersPanel;
+import frontend.panels.profile.PlaylistsPanel;
+import frontend.panels.profile.ProfilePanel;
+import frontend.panels.profile.FavoriteSongsPanel;
 import backend.User;
 import backend.services.UserService;
 
@@ -16,8 +15,8 @@ import java.awt.*;
 public class ProfileFrame extends JFrame implements UserRemovedListener {
     private final Dimension dimension = new Dimension(1024, 600);
     private ProfilePanel profilePanel;
-    private SongsPanel songsPanel;
-    private PerformersPanel performersPanel;
+    private FavoriteSongsPanel songsPanel;
+    private FavoritePerformersPanel performersPanel;
     private PlaylistsPanel playlistsPanel;
     User user;
     UserRemovedListener listener;
@@ -39,9 +38,9 @@ public class ProfileFrame extends JFrame implements UserRemovedListener {
 
 
         profilePanel = new ProfilePanel(this, user);
-        songsPanel = new SongsPanel();
-        performersPanel = new PerformersPanel(user);
-        playlistsPanel = new PlaylistsPanel();
+        songsPanel = new FavoriteSongsPanel(user);
+        performersPanel = new FavoritePerformersPanel(user);
+        playlistsPanel = new PlaylistsPanel(user);
 
         centerContainer.add(songsPanel);
         centerContainer.add(Box.createVerticalStrut(10)); // spacing
