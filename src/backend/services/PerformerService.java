@@ -10,6 +10,7 @@ import java.util.List;
 public class PerformerService {
 
     private static PerformerService instance = null;
+    private static Audit audit = new Audit();
 
     private PerformerService() {
     }
@@ -61,7 +62,7 @@ public class PerformerService {
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     id = rs.getInt("id");
-                    System.out.println("Artist adaugat: " + performer.getName());
+                    audit.log("Artist adaugat: " + performer.getName());
                 }
             }
 
@@ -83,7 +84,7 @@ public class PerformerService {
                     stmt.setString(2, member.getName());
 
                     stmt.executeUpdate();
-                    System.out.println("Membrul trupei adaugat: " + member.getName());
+                    audit.log("Membrul trupei adaugat: " + member.getName());
 
                 } catch (SQLException e) {
                     System.err.println("Eroare la adaugarea membrului trupei: " + e.getMessage());

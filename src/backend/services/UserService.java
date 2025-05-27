@@ -1,17 +1,15 @@
 package backend.services;
 
-import backend.Performer;
-import backend.Song;
-import backend.User;
-import backend.UserNotFoundException;
+import backend.*;
 import backend.database.DatabaseConnector;
 
 import java.sql.*;
 import java.util.ArrayList;
 
 public class UserService {
-
     private static UserService instance = null;
+    private static Audit audit = new Audit();
+
 
     private UserService() {}
 
@@ -56,7 +54,7 @@ public class UserService {
             stmt.setString(2, user.getPassword());
 
             stmt.executeUpdate();
-            System.out.println("Utilizator adaugat: " + user.getUsername());
+            audit.log("Utilizator adaugat: " + user.getUsername());
 
         } catch (SQLException e) {
             System.err.println("Eroare la adaugarea utilizatorului: " + e.getMessage());
@@ -99,7 +97,7 @@ public class UserService {
             int affectedRows = stmt.executeUpdate();
 
             if (affectedRows > 0) {
-                System.out.println("Utilizatorul cu id-ul " + user.getId() + " a fost sters.");
+                audit.log("Utilizatorul cu id-ul " + user.getId() + " a fost sters.");
             } else {
                 throw new UserNotFoundException("Utilizatorul cu id-ul " + user.getId() + " nu a fost gasit.");
             }
@@ -140,7 +138,7 @@ public class UserService {
     public void addFavoritePerformer(User user, Performer performer) {
         try {
             Performer existing = findFavoritePerformer(user.getId(), performer.getId());
-            System.out.println("Artistul " + performer.getName() + " este deja in lista de favoriti pentru " + user.getUsername());
+            audit.log("Artistul " + performer.getName() + " este deja in lista de favoriti pentru " + user.getUsername());
             return;
 
         } catch (RuntimeException e) {
@@ -158,7 +156,7 @@ public class UserService {
             stmt.setInt(2, performer.getId());
 
             stmt.executeUpdate();
-            System.out.println("Artist favorit adaugat: " + performer.getName() + " la utilizatorul: " + user.getUsername());
+            audit.log("Artist favorit adaugat: " + performer.getName() + " la utilizatorul: " + user.getUsername());
 
         } catch (SQLException e) {
             System.err.println("Eroare la adaugarea artistului favorit: " + e.getMessage());
@@ -223,7 +221,7 @@ public class UserService {
     public void addFavoriteSong(User user, Song song) {
         try {
             Song existing = findFavoriteSong(user.getId(), song.getId());
-            System.out.println("Artistul " + song.getName() + " este deja in lista de favoriti pentru " + user.getUsername());
+            audit.log("Artistul " + song.getName() + " este deja in lista de favoriti pentru " + user.getUsername());
             return;
 
         } catch (RuntimeException e) {
@@ -241,7 +239,7 @@ public class UserService {
             stmt.setInt(2, song.getId());
 
             stmt.executeUpdate();
-            System.out.println("Artist favorit adaugat: " + song.getName() + " la utilizatorul: " + user.getUsername());
+            audit.log("Artist favorit adaugat: " + song.getName() + " la utilizatorul: " + user.getUsername());
 
         } catch (SQLException e) {
             System.err.println("Eroare la adaugarea artistului favorit: " + e.getMessage());

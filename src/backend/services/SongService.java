@@ -8,6 +8,8 @@ import java.util.ArrayList;
 
 public class SongService {
     private static SongService instance = null;
+    private static Audit audit = new Audit();
+
 
     private SongService() {}
 
@@ -57,7 +59,7 @@ public class SongService {
             stmt.setInt(4, song.getPerformer().getId());
 
             stmt.executeUpdate();
-            System.out.println("Melodie adaugata: " + song.getName());
+            audit.log("Melodie adaugata: " + song.getName());
 
         } catch (SQLException e) {
             System.err.println("Eroare la adaugarea melodiei: " + e.getMessage());
