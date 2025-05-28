@@ -15,6 +15,7 @@ import java.awt.event.MouseEvent;
 
 public class UsersPanel extends JPanel {
     private Header header;
+    private JLabel infoLabel;
     private JButton addUserButton;
 
 
@@ -26,6 +27,11 @@ public class UsersPanel extends JPanel {
         // Cream header-ul pentru panel-ul cu utilizatori
         header = new Header("Users", 20);
         header.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        infoLabel = new JLabel("Click on a user's name to open their profile.");
+        infoLabel.setForeground(Colors.PRIMARY.getColor());
+        infoLabel.setFont(new Font("Helvetica Neue", Font.ITALIC, 13));
+        infoLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Cream butonul de ADD
         addUserButton = new JButton("Add New User");
@@ -84,6 +90,9 @@ public class UsersPanel extends JPanel {
 
         // Adaugam header-ul si spacing-ul
         add(header);
+        add(Box.createVerticalStrut(10));
+
+        add(infoLabel);
         add(Box.createVerticalStrut(10));
 
         // Adaugam butonul de ADD

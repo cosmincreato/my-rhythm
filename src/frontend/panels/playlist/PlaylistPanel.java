@@ -1,40 +1,49 @@
-package frontend.panels.profile;
+package frontend.panels.playlist;
 
+import backend.Playlist;
 import backend.Song;
 import backend.User;
+import backend.UserNotFoundException;
+import backend.services.PlaylistService;
 import backend.services.SongService;
 import backend.services.UserService;
 import frontend.Colors;
 import frontend.Header;
+import frontend.UserRemovedListener;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-public class PlaylistsPanel extends JPanel {
-    private JButton addPlaylistButton;
+public class PlaylistPanel extends JPanel {
     private Header header;
-    private User user;
+    private JButton addSongButton;
+    private Playlist playlist;
 
-    public PlaylistsPanel(User user) {
-        this.user = user;
+    public PlaylistPanel(Playlist playlist) {
+        this.playlist = playlist;
 
-        // Initializare
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setBackground(Colors.BACKGROUND.getColor());
 
-        // Cream header-ul pentru panel-ul cu playlisturi
-        header = new Header("Playlists", 20);
+        // Cram header-ul
+        header = new Header(playlist.getName(), 40);
         header.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        addPlaylistButton = new JButton("Create Playlist");
-        addPlaylistButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        addPlaylistButton.addActionListener(this::onAddPlaylistClicked);
+
+        // Cream butonul de DELETE
+        addSongButton = new JButton("Add Song To Playlist");
+        addSongButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+
+        addSongButton.addActionListener(this::onAddSongClicked);
 
         update();
     }
-    private void onAddPlaylistClicked(ActionEvent e) {
+
+    private void onAddSongClicked(ActionEvent e) {
         ArrayList<Song> songs = SongService.getInstance().getSongs();
 
         if (songs.size() != 0) {
@@ -49,28 +58,31 @@ public class PlaylistsPanel extends JPanel {
             );
 
             if (selected != null) {
-                UserService.getInstance().addFavoriteSong(user, selected);
+                PlaylistService.getInstance().addSongToPlaylist(playlist, selected);
                 update();
             }
         }
     }
 
-    public void update() {
-        ArrayList<Song> favoriteSongs = UserService.getInstance().getFavoriteSongs(user);
+    private void update() {
+        ArrayList<Song> playlistSongs = PlaylistService.getInstance().getPlaylistSongs(playlist);
         // Stergem content-ul din panel-ul invechit
         removeAll();
 
-        // Readaugam header-ul, butonul si spacing-ul
+        // Adaugam header-ul
         add(header);
         add(Box.createVerticalStrut(10));
-        add(addPlaylistButton);
 
-        // Cream un panel pentru lista de artisti actualizata
+        // Adaugam butonul de ADD
+        add(addSongButton);
+        add(Box.createVerticalStrut(20));
+
+        // Cream un panel pentru lista de melodii actualizata
         JPanel songLabelPanel = new JPanel();
         songLabelPanel.setLayout(new BoxLayout(songLabelPanel, BoxLayout.Y_AXIS));
         songLabelPanel.setBackground(Colors.BACKGROUND.getColor());
 
-        for (Song song : favoriteSongs) {
+        for (Song song : playlistSongs) {
             JLabel performerLabel = new JLabel(song.toString());
             performerLabel.setFont(new Font("Helvetica Neue", Font.PLAIN, 14));
             performerLabel.setForeground(Color.WHITE);
@@ -90,4 +102,3 @@ public class PlaylistsPanel extends JPanel {
         repaint();
     }
 }
-

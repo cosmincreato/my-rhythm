@@ -128,4 +128,3 @@ public class SongsPanel extends JPanel {
         repaint();
     }
 }
-

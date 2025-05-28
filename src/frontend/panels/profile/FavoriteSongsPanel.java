@@ -68,7 +68,7 @@ public class FavoriteSongsPanel extends JPanel {
         add(Box.createVerticalStrut(10));
         add(addSongButton);
 
-        // Cream un panel pentru lista de artisti actualizata
+        // Cream un panel pentru lista de melodii actualizata
         JPanel songLabelPanel = new JPanel();
         songLabelPanel.setLayout(new BoxLayout(songLabelPanel, BoxLayout.Y_AXIS));
         songLabelPanel.setBackground(Colors.BACKGROUND.getColor());

@@ -53,6 +53,6 @@ public class User {
 
     @Override
     public String toString() {
-        return "[" + id + "] " + "Username: " + username;
+        return "User: " + username;
     }
 }

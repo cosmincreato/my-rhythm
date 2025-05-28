@@ -221,7 +221,7 @@ public class UserService {
     public void addFavoriteSong(User user, Song song) {
         try {
             Song existing = findFavoriteSong(user.getId(), song.getId());
-            audit.log("Artistul " + song.getName() + " este deja in lista de favoriti pentru " + user.getUsername());
+            System.out.println("Artistul " + song.getName() + " este deja in lista de favoriti pentru " + user.getUsername());
             return;
 
         } catch (RuntimeException e) {

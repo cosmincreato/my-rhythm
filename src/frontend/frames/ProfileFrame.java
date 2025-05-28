@@ -3,7 +3,7 @@ package frontend.frames;
 import frontend.Colors;
 import frontend.UserRemovedListener;
 import frontend.panels.profile.FavoritePerformersPanel;
-import frontend.panels.profile.PlaylistsPanel;
+import frontend.panels.profile.UserPlaylistsPanel;
 import frontend.panels.profile.ProfilePanel;
 import frontend.panels.profile.FavoriteSongsPanel;
 import backend.User;
@@ -17,7 +17,7 @@ public class ProfileFrame extends JFrame implements UserRemovedListener {
     private ProfilePanel profilePanel;
     private FavoriteSongsPanel songsPanel;
     private FavoritePerformersPanel performersPanel;
-    private PlaylistsPanel playlistsPanel;
+    private UserPlaylistsPanel playlistsPanel;
     User user;
     UserRemovedListener listener;
 
@@ -40,7 +40,7 @@ public class ProfileFrame extends JFrame implements UserRemovedListener {
         profilePanel = new ProfilePanel(this, user);
         songsPanel = new FavoriteSongsPanel(user);
         performersPanel = new FavoritePerformersPanel(user);
-        playlistsPanel = new PlaylistsPanel(user);
+        playlistsPanel = new UserPlaylistsPanel(user);
 
         centerContainer.add(songsPanel);
         centerContainer.add(Box.createVerticalStrut(10)); // spacing
