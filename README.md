@@ -1,6 +1,6 @@
 # MyRhythm
 
-**MyRhythm** is a minimalist full-stack desktop application written in Java. It allows administrators to manage users, artists, songs, and playlists. The backend uses **PostgreSQL**, with direct JDBC integration for data persistence, while the frontend is built with **Swing**.
+**MyRhythm** is a full-stack desktop application written in Java. It allows administrators to manage users, artists, songs, and playlists. The backend uses **PostgreSQL**, with direct JDBC integration for data persistence, while the frontend is built with **Swing**.
 
 ![Main Page](https://i.imgur.com/sFHCX93.png)
 
